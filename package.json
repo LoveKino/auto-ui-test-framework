@@ -1,0 +1,28 @@
+{
+    "name": "auto-ui-test-framework",
+    "version": "0.0.1",
+    "description": "auto ui test framework",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/LoveKino/auto-ui-test-framework.git"
+    },
+    "keywords": [
+        "auto",
+        "ui",
+        "test",
+        "framework"
+    ],
+    "author": "ddchen",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/LoveKino/auto-ui-test-framework/issues"
+    },
+    "homepage": "https://github.com/LoveKino/auto-ui-test-framework#readme",
+    "dependencies": {
+        "web-container-env": "~0.0.1"
+    }
+}

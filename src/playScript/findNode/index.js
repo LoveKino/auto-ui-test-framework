@@ -31,7 +31,6 @@ let findNode = (source) => {
 let findTheMostPossibleOne = (nodes, source) => {
     let degrees = getAllDegree(nodes, source);
     let index = maxIndex(degrees);
-    console.log(nodes[index], degrees[index]); // eslint-disable-line
 
     return {
         node: nodes[index],

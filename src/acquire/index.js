@@ -28,12 +28,6 @@ module.exports = ({
 }) => {
     const pageInfoKey = `${rootId}-pageInfo`;
 
-    let {
-        config
-    } = passData;
-
-    refreshId = refreshId || genId();
-
     let record = (historyInfo, opts) => {
         let {
             capture
@@ -65,13 +59,34 @@ module.exports = ({
         capture(accept);
     };
 
-    // get history
-    memory.get(pageInfoKey).then((historyInfo) => {
-        historyInfo = historyInfo || {
-            actions: []
-        };
-        record(historyInfo, config.action);
-    });
+    let getRecordData = () => {
+        // get history
+        return memory.get(pageInfoKey).then((historyInfo) => {
+            historyInfo = historyInfo || {
+                actions: []
+            };
+
+            return historyInfo;
+        });
+    };
+
+    let start = () => {
+        let {
+            config
+        } = passData;
+
+        refreshId = refreshId || genId();
+
+        // get history
+        getRecordData().then(historyInfo =>
+            record(historyInfo, config.action)
+        );
+    };
+
+    return {
+        start,
+        getRecordData
+    };
 };
 
 let setGapTime = (prev, cur, playedTime) => {

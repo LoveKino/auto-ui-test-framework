@@ -52,6 +52,8 @@ module.exports = (opts = {
             captureEvent(opts.eventTypeList || [], event => {
                 let action = getAction(event);
                 handle(action);
+            }, {
+                onlyUserAction: true
             });
         }
     };

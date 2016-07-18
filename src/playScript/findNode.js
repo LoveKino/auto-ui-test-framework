@@ -10,7 +10,7 @@ let {
 
 let {
     serializeNode, serializePath
-} = require('../util/serialize');
+} = require('serialize-front');
 
 let findNode = (source) => {
     let {

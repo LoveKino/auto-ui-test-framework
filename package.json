@@ -24,6 +24,7 @@
     "homepage": "https://github.com/LoveKino/auto-ui-test-framework#readme",
     "dependencies": {
         "web-container-env": "~0.0.1",
-        "dom-node-similarity": "~0.0.1"
+        "dom-node-similarity": "~0.0.1",
+        "serialize-front": "~0.0.1"
     }
 }

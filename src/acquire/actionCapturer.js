@@ -3,7 +3,7 @@
 let captureEvent = require('./captureEvent');
 let {
     serializeEvent, serializeNode, serializePath
-} = require('../util/serialize');
+} = require('serialize-front');
 
 let getAction = (event) => {
     let node = event.target;

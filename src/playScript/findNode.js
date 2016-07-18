@@ -6,11 +6,11 @@ let {
 
 let {
     contain, maxIndex
-} = require('../../util');
+} = require('../util');
 
 let {
     serializeNode, serializePath
-} = require('../../util/serialize');
+} = require('../util/serialize');
 
 let findNode = (source) => {
     let {

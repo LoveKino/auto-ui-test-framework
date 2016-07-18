@@ -14,15 +14,21 @@
  * TODO unit tests
  */
 
-let getActionFragment = (actions, index) => {
-    let fragments = getAllFragments(actions);
+let {
+    findIndex, group, findListInGroup, getDistinctIndex, contain
+} = require('../util');
 
-    let fragInfo = whichFragment(index, fragments);
+let getActionFragment = (actions, index) => {
+    // group by winId
+    let fragments = getFragments(actions);
+
+    let fragInfo = findListInGroup(fragments, index);
 
     if (fragInfo) {
+        fragInfo.fragment = fragInfo.list;
         fragInfo.actions = actions;
         // chose window
-        let winIndex = getDistinctWinIndex(getWinIds(fragments), fragInfo.index);
+        let winIndex = getDistinctIndex(getWinIds(fragments), fragInfo.index);
         return {
             winIndex,
             fragInfo
@@ -34,23 +40,19 @@ let getActionFragment = (actions, index) => {
     };
 };
 
+let getFragments = (actions) => group(actions, (action) => action.winId);
+
+let getFragmentWinIndex = (fragment, fragments) => {
+    let fIndex = findIndex(fragments, fragment);
+    let winIds = getWinIds(fragments);
+    return getDistinctIndex(winIds, fIndex);
+};
+
 /**
  * exclude root window
  *
  * analysis fragments to know the window switch information
  */
-
-let getDistinctWinIndex = (winIds, index) => {
-    let collects = [];
-    for (let i = 0; i <= index; i++) {
-        let winId = winIds[i];
-        if (!contain(collects, winId)) {
-            collects.push(winId);
-        }
-    }
-
-    return findIndex(collects, winIds[index]);
-};
 
 let getWinIds = (fragments) => {
     let winIds = [];
@@ -64,59 +66,31 @@ let getWinIds = (fragments) => {
     return winIds;
 };
 
-let getAllFragments = (actions) => {
-    let fragments = [];
-    let curWinId = null;
-    let fragment = null;
-    for (let i = 0; i < actions.length; i++) {
-        if (!curWinId) {
-            curWinId = actions[i].winId;
-            fragment = [actions[i]];
-            fragments.push(fragment);
-        } else {
-            if (actions[i].winId === curWinId) {
-                fragment.push(actions[i]);
-            } else {
-                //
-                curWinId = actions[i].winId;
-                fragment = [actions[i]];
-                fragments.push(fragment);
-            }
-        }
-    }
-    return fragments;
-};
-
-let whichFragment = (actionIndex, fragments) => {
-    let pass = 0;
+let getRefreshIds = (fragments) => {
+    let ids = [];
     for (let i = 0; i < fragments.length; i++) {
         let fragment = fragments[i];
-        if (fragment.length) {
-            let limit = pass + fragment.length - 1;
-            if (actionIndex >= pass && actionIndex <= limit) {
-                return {
-                    index: i,
-                    start: pass,
-                    end: limit,
-                    fragment
-                };
+        for (let j = 0; j < fragment.length; j++) {
+            let action = fragment[j];
+            if (!contain(ids, action.refreshId)) {
+                ids.push(action.refreshId);
             }
-            pass = limit + 1;
         }
     }
+    return ids;
 };
 
-let contain = (list, item) => findIndex(list, item) !== -1;
-
-let findIndex = (list, item) => {
-    for (let i = 0; i < list.length; i++) {
-        if (item === list[i]) {
-            return i;
-        }
-    }
-    return -1;
+let getRefreshIndex = (action, fragments) => {
+    return findIndex(getRefreshIds(fragments), action.refreshId);
 };
+
+let getRefreshId = (fragments, index) => getRefreshIds(fragments)[index];
 
 module.exports = {
-    getActionFragment
+    getActionFragment,
+    getFragments,
+    getFragmentWinIndex,
+    getRefreshIds,
+    getRefreshIndex,
+    getRefreshId
 };

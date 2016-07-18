@@ -20,9 +20,9 @@ let {
 module.exports = ({
     winId,
     rootId,
+    refreshId,
     passData,
     memory,
-    refreshId,
     playedTime,
     actionOpts = {}
 }) => {

@@ -153,6 +153,70 @@ let maxIndex = (list, compare) => maxItem(list, compare).index;
 
 let defCompare = (a, b) => a > b;
 
+let findIndex = (list, item) => {
+    for (let i = 0; i < list.length; i++) {
+        if (item === list[i]) {
+            return i;
+        }
+    }
+    return -1;
+};
+
+let group = (list = [], feature) => {
+    let fragments = [];
+    let cur = null;
+    let fragment = null;
+    for (let i = 0; i < list.length; i++) {
+        let item = list[i];
+        if (!cur) {
+            cur = feature(item);
+            fragment = [item];
+            fragments.push(fragment);
+        } else {
+            if (feature(item) === cur) {
+                fragment.push(item);
+            } else {
+                //
+                cur = feature(item);
+                fragment = [item];
+                fragments.push(fragment);
+            }
+        }
+    }
+    return fragments;
+};
+
+let findListInGroup = (matrix, index = 0) => {
+    let pass = 0;
+    for (let i = 0; i < matrix.length; i++) {
+        let list = matrix[i];
+        if (list.length) {
+            let limit = pass + list.length - 1;
+            if (index >= pass && index <= limit) {
+                return {
+                    index: i,
+                    start: pass,
+                    end: limit,
+                    list
+                };
+            }
+            pass = limit + 1;
+        }
+    }
+};
+
+let getDistinctIndex = (Ids, index) => {
+    let collects = [];
+    for (let i = 0; i <= index; i++) {
+        let id = Ids[i];
+        if (!contain(collects, id)) {
+            collects.push(id);
+        }
+    }
+
+    return findIndex(collects, Ids[index]);
+};
+
 module.exports = {
     maxIndex,
     mapToList,
@@ -169,5 +233,9 @@ module.exports = {
     getAttributes,
     shadowClone,
     interset,
-    union
+    union,
+    findIndex,
+    group,
+    findListInGroup,
+    getDistinctIndex
 };

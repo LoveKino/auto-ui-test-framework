@@ -35,7 +35,7 @@ module.exports = (({
     return getIndex().then(index => {
         // be ready to play
         let refreshId = getRefreshId(actions, index);
-        let deal = (...args) => {
+        let playAction = (...args) => {
             actionOpts && actionOpts.before.apply(undefined, args);
             let action = args[0];
             // wait the moment
@@ -54,7 +54,7 @@ module.exports = (({
             });
         };
 
-        return handleBreakList(deal).then(() => {
+        return handleBreakList(playAction).then(() => {
             return {
                 refreshId: getFragmentLastRefreshId(actions, start, end),
                 next: end + 1

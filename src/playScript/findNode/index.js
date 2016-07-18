@@ -1,6 +1,8 @@
 'use strict';
 
-let matchDegree = require('./matchDegree');
+let {
+    getSimilarityDegree
+} = require('dom-node-similarity');
 
 let {
     contain, maxIndex
@@ -43,7 +45,7 @@ let getAllDegree = (nodes, source) => {
     for (let i = 0; i < nodes.length; i++) {
         let node = nodes[i];
         let nodeInfo = getNodeInfo(node);
-        let deg = matchDegree(nodeInfo, source);
+        let deg = getSimilarityDegree(nodeInfo, source);
         degrees.push(deg);
     }
     return degrees;
